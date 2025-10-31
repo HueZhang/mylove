@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="zh">
+  <head>
+    <meta charset="UTF-8" />
+    <title>❤ 无限表白弹窗</title>
+    <style>
+      body {
+        margin: 0;
+        overflow: hidden;
+        background-color: #fffafc;
+        font-family: "Segoe UI Emoji", "Comic Sans MS", sans-serif;
+      }
+      .love-popup {
+        position: fixed;
+        padding: 10px 15px;
+        border-radius: 16px;
+        color: white;
+        font-size: 22px;
+        text-align: center;
+        opacity: 0;
+        transform: scale(0.5);
+        animation: popup 3s ease-out forwards;
+        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+        pointer-events: none;
+      }
+      @keyframes popup {
+        0% {
+          opacity: 0;
+          transform: scale(0.5);
+        }
+        15% {
+          opacity: 1;
+          transform: scale(1.1);
+        }
+        85% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        100% {
+          opacity: 0;
+          transform: scale(0.5);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <script>
+      const loveSentences = [
+        "喜欢你💖",
+        "想见你🌸",
+        "你真好看🥰",
+        "有你真好✨",
+        "偷偷喜欢你🌹",
+        "嘿，我在想你🍓",
+        "小笨蛋😚",
+        "我想你啦💞",
+        "给我抱抱🤗",
+        "你是唯一💘",
+        "你笑我就甜🍬",
+        "做我女朋友吧💍",
+        "有点想你🤭",
+        "喜欢你的样子💐",
+        "遇见你真好🎈",
+        "每天都想见到你☀️",
+        "💖💖💖",
+        "🥰🥰🥰",
+        "🌸🌸🌸",
+        "💞💞💞",
+        "🌹🌹🌹",
+        "😚😚😚",
+        "✨✨✨",
+        "🍓🍓🍓",
+        "🌈🌈🌈",
+        "🐱🐱🐱",
+        "🎈🎈🎈",
+        "💫💫💫",
+        "你是我的小确幸💞",
+        "世界因你而温柔🌸",
+        "心跳因为你💗",
+        "你比星星还亮✨",
+        "最想去的地方是你怀里🤗",
+        "和你在一起真好💖",
+      ];
+
+      const colors = [
+        "pink",
+        "lightblue",
+        "lavender",
+        "lightgreen",
+        "lightyellow",
+        "plum",
+        "peachpuff",
+        "mistyrose",
+        "lightcoral",
+        "lightsalmon",
+        "palevioletred",
+        "thistle",
+      ];
+
+      function randomPopup() {
+        const popup = document.createElement("div");
+        popup.className = "love-popup";
+        popup.textContent =
+          loveSentences[Math.floor(Math.random() * loveSentences.length)];
+        popup.style.backgroundColor =
+          colors[Math.floor(Math.random() * colors.length)];
+
+        const w = window.innerWidth;
+        const h = window.innerHeight;
+        const x = Math.random() * (w - 200);
+        const y = Math.random() * (h - 80);
+
+        popup.style.left = `${x}px`;
+        popup.style.top = `${y}px`;
+        document.body.appendChild(popup);
+
+        // 自动删除节点（3秒动画后）
+        setTimeout(() => popup.remove(), 3000);
+      }
+
+      // 无限循环（每 50ms 弹一个）
+      setInterval(randomPopup, 50);
+    </script>
+  </body>
+</html>
