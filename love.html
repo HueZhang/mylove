@@ -3,26 +3,32 @@
   <head>
     <meta charset="UTF-8" />
     <title>Sorry</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <style>
+      html,
       body {
         margin: 0;
+        padding: 0;
         overflow: hidden;
-        background-color: #fffafc;
+        background: linear-gradient(135deg, #fffafc 0%, #ffeef5 100%);
         font-family: "Segoe UI Emoji", "Comic Sans MS", sans-serif;
+        height: 100%;
       }
+
       .love-popup {
         position: fixed;
-        padding: 10px 15px;
+        padding: 0.5em 1em;
         border-radius: 16px;
         color: white;
-        font-size: 22px;
         text-align: center;
         opacity: 0;
         transform: scale(0.5);
-        animation: popup 3s ease-out forwards;
+        animation: popup 3.5s ease-out forwards;
         box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
         pointer-events: none;
+        word-break: keep-all;
       }
+
       @keyframes popup {
         0% {
           opacity: 0;
@@ -41,46 +47,63 @@
           transform: scale(0.5);
         }
       }
+
+      /* 自适应文字大小 */
+      @media (max-width: 600px) {
+        .love-popup {
+          font-size: 16px;
+          padding: 6px 10px;
+        }
+      }
+
+      @media (min-width: 601px) {
+        .love-popup {
+          font-size: 22px;
+        }
+      }
     </style>
   </head>
   <body>
+    <!-- 背景音乐（替换 music.mp3 为你自己的音乐） -->
+    <audio id="bgm" src="./static/sorry.mp3" loop preload="auto"></audio>
+
     <script>
       const loveSentences = [
-  "对不起，我错了🙇‍♂️",
-  "原谅我好吗🥺",
-  "是我不好😔",
-  "别生气啦💔",
-  "我真的很抱歉🌧️",
-  "我知道错了🙏",
-  "请给我一次机会✨",
-  "以后不会再这样了💫",
-  "都是我的错😣",
-  "你能原谅我吗🌸",
-  "我保证会改正🌟",
-  "心里好难受💧",
-  "不想失去你💘",
-  "给我个机会弥补☔",
-  "真的很后悔🌙",
-  "我会好好珍惜的💞",
-  "🙇‍♂️🙇‍♂️🙇‍♂️",
-  "🥺🥺🥺",
-  "😔😔😔",
-  "💔💔💔",
-  "🙏🙏🙏",
-  "🌧️🌧️🌧️",
-  "✨✨✨",
-  "💫💫💫",
-  "😣😣😣",
-  "🌸🌸🌸",
-  "🌟🌟🌟",
-  "💧💧💧",
-  "我意识到自己的问题了",
-  "你的感受我完全理解",
-  "我会努力变得更好",
-  "不想让你难过",
-  "请接受我的歉意",
-  "我会用行动证明",
-];
+        "对不起，我错了🙇‍♂️",
+        "原谅我好吗🥺",
+        "是我不好😔",
+        "别生气啦💔",
+        "我真的很抱歉🌧️",
+        "我知道错了🙏",
+        "请给我一次机会✨",
+        "以后不会再这样了💫",
+        "都是我的错😣",
+        "你能原谅我吗🌸",
+        "我保证会改正🌟",
+        "心里好难受💧",
+        "不想失去你💘",
+        "给我个机会弥补☔",
+        "真的很后悔🌙",
+        "我会好好珍惜的💞",
+        "🙇‍♂️🙇‍♂️🙇‍♂️",
+        "🥺🥺🥺",
+        "😔😔😔",
+        "💔💔💔",
+        "🙏🙏🙏",
+        "🌧️🌧️🌧️",
+        "✨✨✨",
+        "💫💫💫",
+        "😣😣😣",
+        "🌸🌸🌸",
+        "🌟🌟🌟",
+        "💧💧💧",
+        "我意识到自己的问题了",
+        "你的感受我完全理解",
+        "我会努力变得更好",
+        "不想让你难过",
+        "请接受我的歉意",
+        "我会用行动证明",
+      ];
 
       const colors = [
         "pink",
@@ -108,19 +131,45 @@
         const w = window.innerWidth;
         const h = window.innerHeight;
         const x = Math.random() * (w - 200);
-        const y = Math.random() * (h - 80);
+        const y = Math.random() * (h - 100);
 
         popup.style.left = `${x}px`;
         popup.style.top = `${y}px`;
         document.body.appendChild(popup);
 
-        // 自动删除节点（3秒动画后）
-        setTimeout(() => popup.remove(), 3000);
+        setTimeout(() => popup.remove(), 3500);
       }
 
-      // 无限循环（每 50ms 弹一个）
-      setInterval(randomPopup, 50);
+      // 手机端频率稍慢一点
+      const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
+      const interval = isMobile ? 100 : 50;
+
+      function startAll() {
+        // 启动弹窗
+        setInterval(randomPopup, interval);
+
+        // 自动播放音乐
+        const bgm = document.getElementById("bgm");
+        bgm.volume = 0; // 静音启动（部分浏览器要求）
+        bgm.play().then(() => {
+          // 延迟恢复音量
+          setTimeout(() => {
+            bgm.volume = 1;
+          }, 500);
+        }).catch(() => {
+          // 如果仍被拦截，则尝试通过用户交互恢复
+          document.body.addEventListener(
+            "touchstart",
+            () => {
+              bgm.play();
+            },
+            { once: true }
+          );
+        });
+      }
+
+      // 页面加载后启动
+      window.addEventListener("load", startAll);
     </script>
   </body>
 </html>
-
