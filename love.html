@@ -1,183 +1,140 @@
 <!DOCTYPE html>
-<html lang="zh">
+<html lang="zh-CN">
   <head>
     <meta charset="UTF-8" />
-    <title>Sorry</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>给你的惊喜 💝</title>
     <style>
-      html,
       body {
-        margin: 0;
-        padding: 0;
+        background: radial-gradient(circle at center, #ffe0f0, #ffb6c1);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
         overflow: hidden;
-        background: linear-gradient(135deg, #fffafc 0%, #ffeef5 100%);
-        font-family: "Segoe UI Emoji", "Comic Sans MS", sans-serif;
-        height: 100%;
+        margin: 0;
       }
 
-      .love-popup {
-        position: fixed;
-        padding: 0.5em 1em;
-        border-radius: 16px;
-        color: white;
-        text-align: center;
-        opacity: 0;
-        transform: scale(0.5);
-        animation: popup 3.5s ease-out forwards;
-        box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-        pointer-events: none;
-        word-break: keep-all;
+      #gift-box {
+        position: relative;
+        width: 150px;
+        height: 150px;
+        background: #ff4081;
+        border-radius: 10px;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+        transition: transform 0.3s;
       }
 
-      @keyframes popup {
+      #gift-lid {
+        position: absolute;
+        top: -30px;
+        left: 0;
+        width: 150px;
+        height: 40px;
+        background: #d81b60;
+        border-radius: 10px 10px 0 0;
+        transition: transform 0.8s ease-out;
+      }
+
+      #gift-box.open #gift-lid {
+        transform: translateY(-80px) rotate(-15deg);
+      }
+
+      .popup {
+        position: absolute;
+        padding: 10px 20px;
+        background: white;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        font-family: "微软雅黑", sans-serif;
+        animation: fadeUp 1.5s ease forwards;
+      }
+
+      @keyframes fadeUp {
         0% {
           opacity: 0;
-          transform: scale(0.5);
+          transform: translateY(50px) scale(0.8);
         }
-        15% {
+        50% {
           opacity: 1;
-          transform: scale(1.1);
-        }
-        85% {
-          opacity: 1;
-          transform: scale(1);
+          transform: translateY(-10px) scale(1.1);
         }
         100% {
           opacity: 0;
-          transform: scale(0.5);
+          transform: translateY(-100px) scale(0.8);
         }
       }
 
-      /* 自适应文字大小 */
-      @media (max-width: 600px) {
-        .love-popup {
-          font-size: 16px;
-          padding: 6px 10px;
-        }
-      }
-
-      @media (min-width: 601px) {
-        .love-popup {
-          font-size: 22px;
-        }
+      #tip {
+        position: absolute;
+        bottom: 20px;
+        font-family: "微软雅黑";
+        color: #c2185b;
+        font-size: 1.1em;
+        opacity: 0.9;
       }
     </style>
   </head>
   <body>
+    <div id="gift-box">
+      <div id="gift-lid"></div>
+    </div>
+    <div id="tip">✨ 轻轻点一下礼物盒 ✨</div>
+
     <audio
+      id="bgm"
       src="https://huezhang.github.io/mylove/static/sorry.mp3"
-      autoplay
-      muted
+      preload="auto"
       loop
     ></audio>
 
     <script>
+      const box = document.getElementById("gift-box");
+      const lid = document.getElementById("gift-lid");
+      const tip = document.getElementById("tip");
+      const bgm = document.getElementById("bgm");
+
       const loveSentences = [
-        "对不起，我错了🙇‍♂️",
-        "原谅我好吗🥺",
-        "是我不好😔",
-        "别生气啦💔",
-        "我真的很抱歉🌧️",
-        "我知道错了🙏",
-        "请给我一次机会✨",
-        "以后不会再这样了💫",
-        "都是我的错😣",
-        "你能原谅我吗🌸",
-        "我保证会改正🌟",
-        "心里好难受💧",
-        "不想失去你💘",
-        "给我个机会弥补☔",
-        "真的很后悔🌙",
-        "我会好好珍惜的💞",
-        "🙇‍♂️🙇‍♂️🙇‍♂️",
-        "🥺🥺🥺",
-        "😔😔😔",
-        "💔💔💔",
-        "🙏🙏🙏",
-        "🌧️🌧️🌧️",
-        "✨✨✨",
-        "💫💫💫",
-        "😣😣😣",
-        "🌸🌸🌸",
-        "🌟🌟🌟",
-        "💧💧💧",
-        "我意识到自己的问题了",
-        "你的感受我完全理解",
-        "我会努力变得更好",
-        "不想让你难过",
-        "请接受我的歉意",
-        "我会用行动证明",
+        "喜欢你，是我做过最甜的一件事 💗",
+        "你一出现，整个世界都亮了 ✨",
+        "想和你一起浪费时间，一起虚度年华 🕊️",
+        "有你在的地方，连空气都是甜的 🍓",
+        "你笑的样子，足以抵过世间所有风景 💞",
       ];
 
-      const colors = [
-        "pink",
-        "lightblue",
-        "lavender",
-        "lightgreen",
-        "lightyellow",
-        "plum",
-        "peachpuff",
-        "mistyrose",
-        "lightcoral",
-        "lightsalmon",
-        "palevioletred",
-        "thistle",
-      ];
-
-      function randomPopup() {
+      function showPopup() {
         const popup = document.createElement("div");
-        popup.className = "love-popup";
-        popup.textContent =
+        popup.className = "popup";
+        popup.innerText =
           loveSentences[Math.floor(Math.random() * loveSentences.length)];
-        popup.style.backgroundColor =
-          colors[Math.floor(Math.random() * colors.length)];
-
-        const w = window.innerWidth;
-        const h = window.innerHeight;
-        const x = Math.random() * (w - 200);
-        const y = Math.random() * (h - 100);
-
-        popup.style.left = `${x}px`;
-        popup.style.top = `${y}px`;
         document.body.appendChild(popup);
+        popup.style.left = Math.random() * (window.innerWidth - 150) + "px";
+        popup.style.top = Math.random() * (window.innerHeight - 150) + "px";
 
-        setTimeout(() => popup.remove(), 3500);
+        setTimeout(() => popup.remove(), 1500);
       }
 
-      // 手机端频率稍慢一点
-      const isMobile = /Mobi|Android|iPhone/i.test(navigator.userAgent);
-      const interval = isMobile ? 100 : 50;
-
-      function startAll() {
-        // 启动弹窗
-        setInterval(randomPopup, interval);
-
-        // 自动播放音乐
-        const bgm = document.getElementById("bgm");
-        bgm.volume = 0; // 静音启动（部分浏览器要求）
-        bgm
-          .play()
-          .then(() => {
-            // 延迟恢复音量
-            setTimeout(() => {
-              bgm.volume = 1;
-            }, 500);
-          })
-          .catch(() => {
-            // 如果仍被拦截，则尝试通过用户交互恢复
-            document.body.addEventListener(
-              "touchstart",
-              () => {
-                bgm.play();
-              },
-              { once: true }
-            );
-          });
+      function startLove() {
+        setInterval(showPopup, 800); // 弹出更快一点
       }
-      const bgm = document.querySelector("audio");
-      setTimeout(() => (bgm.muted = false), 800);
-      // 页面加载后启动
-      window.addEventListener("load", startAll);
+
+      box.addEventListener("click", async () => {
+        if (box.classList.contains("open")) return;
+        box.classList.add("open");
+        tip.innerText = "🎶 打开中…";
+
+        try {
+          await bgm.play(); // 用户点击触发播放
+        } catch (e) {
+          console.log("播放失败，可能需要手动交互：", e);
+        }
+
+        // 动画结束后开始弹窗
+        setTimeout(() => {
+          tip.style.display = "none";
+          startLove();
+        }, 1500);
+      });
     </script>
   </body>
 </html>
