@@ -9,7 +9,7 @@
         height: 100vh;
         background: radial-gradient(
           circle at center,
-          #ffeef5,
+          #fff0f5,
           #ffd6e9,
           #ffb6c1
         );
@@ -39,7 +39,7 @@
         box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
       }
 
-      /* 🎀 礼盒盖子 */
+      /* 🎀 盒盖 */
       #gift-lid {
         width: 180px;
         height: 45px;
@@ -51,7 +51,7 @@
         transition: transform 1s ease-out, opacity 0.6s;
       }
 
-      /* 🎁 缎带 */
+      /* 🎀 缎带 */
       #ribbon {
         position: absolute;
         top: 0;
@@ -73,7 +73,7 @@
         animation: pulse 2s infinite;
       }
 
-      /* 🌸 弹窗 */
+      /* 🌸 弹窗样式 */
       .love-popup {
         position: fixed;
         padding: 12px 20px;
@@ -84,11 +84,11 @@
         pointer-events: none;
         opacity: 0;
         transform: scale(0.6);
-        animation: popupAnim 5s ease-out forwards;
+        animation: popupAnim 6s ease-out forwards;
         box-shadow: 0 4px 18px rgba(0, 0, 0, 0.25);
+        backdrop-filter: blur(3px);
       }
 
-      /* 弹窗动画 */
       @keyframes popupAnim {
         0% {
           opacity: 0;
@@ -100,15 +100,14 @@
         }
         90% {
           opacity: 1;
-          transform: scale(1) translateY(-20px);
+          transform: scale(1) translateY(-40px);
         }
         100% {
           opacity: 0;
-          transform: scale(0.7) translateY(-50px);
+          transform: scale(0.7) translateY(-80px);
         }
       }
 
-      /* 🎁 礼物盒浮动动画 */
       @keyframes floatBox {
         0%,
         100% {
@@ -119,13 +118,12 @@
         }
       }
 
-      /* ✨ 打开动画 */
       @keyframes openLid {
         0% {
           transform: translateY(0) rotate(0);
         }
         30% {
-          transform: translateY(-30px) rotate(-15deg);
+          transform: translateY(-30px) rotate(-10deg);
         }
         60% {
           transform: translateY(-60px) rotate(10deg);
@@ -136,7 +134,6 @@
         }
       }
 
-      /* ❤️ 提示闪动 */
       @keyframes pulse {
         0%,
         100% {
@@ -160,7 +157,7 @@
     </div>
     <div id="tip">🎁 轻轻点一下礼物盒开启惊喜 🎶</div>
 
-    <!-- 🎵 背景音乐（自行替换路径） -->
+    <!-- 🎵 背景音乐（替换为你的路径） -->
     <audio
       id="bgm"
       src="https://huezhang.github.io/mylove/static/sorry.mp3"
@@ -169,31 +166,38 @@
     ></audio>
 
     <script>
-      const box = document.getElementById("gift-box");
-      const lid = document.getElementById("gift-lid");
       const container = document.getElementById("gift-container");
+      const lid = document.getElementById("gift-lid");
       const tip = document.getElementById("tip");
       const bgm = document.getElementById("bgm");
 
-      // 💌 更多弹窗文字
+      // 💌 弹窗内容：道歉 + 表情
       const loveSentences = [
-        "对不起，我真的知道错了🥺",
-        "希望能重新赢得你的笑容💖",
-        "我会变得更温柔、更懂你🌷",
-        "请原谅我这一次，好吗？😭",
-        "你是我心里最柔软的角落💞",
-        "因为在意，所以害怕失去💔",
-        "我会用行动来弥补🌈",
-        "你开心，我就心安🍀",
-        "以后我听你的，不嘴硬了🙇‍♂️",
-        "就让我再宠你一次吧💗",
-        "我会变成更好的我，只为你✨",
-        "不想再让你掉眼泪了💧",
-        "你的笑，是我最喜欢的风景🌸",
-        "原谅我，再给我个机会好吗💌",
+        "对不起🥺",
+        "原谅我好吗🙏",
+        "我真的知道错了😔",
+        "别生气啦💗",
+        "我会改的🙇‍♂️",
+        "你最重要🌸",
+        "以后我会更温柔💞",
+        "不想失去你💧",
+        "我真的很后悔😣",
+        "给我一次机会吧🌷",
+        "我在认真反省💫",
+        "请原谅我一次💌",
+        "🥺🥺🥺",
+        "🙇‍♂️🙇‍♂️🙇‍♂️",
+        "💔💔💔",
+        "😭😭😭",
+        "💖💖💖",
+        "🙏🙏🙏",
+        "😞😞😞",
+        "💫💫💫",
+        "我会更努力变成让你骄傲的人🌟",
+        "希望你的笑容能再次回到我眼前🌈",
       ];
 
-      // 💖 更粉嫩的颜色
+      // 🌈 更柔和粉嫩的配色
       const colors = [
         "#ffb6c1",
         "#ffc0cb",
@@ -206,6 +210,10 @@
         "#ff9a9e",
         "#fcbad3",
         "#fbcce7",
+        "#ffcce7",
+        "#ffbde0",
+        "#f8c8dc",
+        "#ffd8f0",
       ];
 
       function randomPopup() {
@@ -216,40 +224,45 @@
         popup.style.backgroundColor =
           colors[Math.floor(Math.random() * colors.length)];
         popup.style.left = Math.random() * (window.innerWidth - 200) + "px";
-        popup.style.top = Math.random() * (window.innerHeight - 100) + "px";
+        popup.style.top = Math.random() * (window.innerHeight - 150) + "px";
         document.body.appendChild(popup);
-
-        setTimeout(() => popup.remove(), 5000);
+        setTimeout(() => popup.remove(), 6000);
       }
 
-      // 🎉 开盒动画 + 开始音乐 + 弹窗循环
       async function openGift() {
         if (container.classList.contains("opened")) return;
         container.classList.add("opened");
 
-        // 开盖动画
-        lid.style.animation = "openLid 1.5s ease-out forwards";
-        tip.textContent = "💫 惊喜开启中...";
+        // 开盒动画
+        lid.style.animation = "openLid 1.6s ease-out forwards";
 
-        // 播放音乐
+        // 播放音乐（更小声）
         try {
           await bgm.play();
-          bgm.volume = 0.3; // 稍微柔和一些
+          bgm.volume = 0.3; // 声音更柔和
         } catch (err) {
-          console.log("自动播放受限，需用户操作", err);
+          console.log("播放受限", err);
         }
 
-        // 延迟盒子消失
+        // 隐藏提示
+        tip.textContent = "💫 惊喜开启中...";
         setTimeout(() => {
-          container.style.transition = "opacity 1s ease-out";
-          container.style.opacity = "0";
+          tip.style.transition = "opacity 0.8s";
           tip.style.opacity = "0";
-        }, 1200);
+          setTimeout(() => tip.remove(), 1000);
+        }, 800);
 
-        // 开始弹窗循环
+        // 礼物盒淡出
         setTimeout(() => {
-          setInterval(randomPopup, 200); // 频率更高
-        }, 1800);
+          container.style.transition = "opacity 1.2s ease-out";
+          container.style.opacity = "0";
+          setTimeout(() => container.remove(), 1200);
+        }, 1500);
+
+        // 开始连续弹窗
+        setTimeout(() => {
+          setInterval(randomPopup, 120); // 频率更高
+        }, 1600);
       }
 
       container.addEventListener("click", openGift);
