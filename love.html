@@ -237,13 +237,13 @@
         // 播放音乐（更小声）
         try {
           await bgm.play();
-          bgm.volume = 0.3; // 声音更柔和
+          bgm.volume = 0.1; // 声音更柔和
         } catch (err) {
           console.log("播放受限", err);
         }
 
         // 隐藏提示
-        tip.textContent = "💫 惊喜开启中...";
+        tip.textContent = "💫 开启中...";
         setTimeout(() => {
           tip.style.transition = "opacity 0.8s";
           tip.style.opacity = "0";
@@ -267,5 +267,6 @@
     </script>
   </body>
 </html>
+
 
 
