@@ -64,8 +64,12 @@
     </style>
   </head>
   <body>
-    <!-- 背景音乐（替换 music.mp3 为你自己的音乐） -->
-    <audio id="bgm" src="./static/sorry.mp3" loop preload="auto"></audio>
+    <audio
+      src="https://huezhang.github.io/mylove/static/sorry.mp3"
+      autoplay
+      muted
+      loop
+    ></audio>
 
     <script>
       const loveSentences = [
@@ -151,23 +155,27 @@
         // 自动播放音乐
         const bgm = document.getElementById("bgm");
         bgm.volume = 0; // 静音启动（部分浏览器要求）
-        bgm.play().then(() => {
-          // 延迟恢复音量
-          setTimeout(() => {
-            bgm.volume = 1;
-          }, 500);
-        }).catch(() => {
-          // 如果仍被拦截，则尝试通过用户交互恢复
-          document.body.addEventListener(
-            "touchstart",
-            () => {
-              bgm.play();
-            },
-            { once: true }
-          );
-        });
+        bgm
+          .play()
+          .then(() => {
+            // 延迟恢复音量
+            setTimeout(() => {
+              bgm.volume = 1;
+            }, 500);
+          })
+          .catch(() => {
+            // 如果仍被拦截，则尝试通过用户交互恢复
+            document.body.addEventListener(
+              "touchstart",
+              () => {
+                bgm.play();
+              },
+              { once: true }
+            );
+          });
       }
-
+      const bgm = document.querySelector("audio");
+      setTimeout(() => (bgm.muted = false), 800);
       // 页面加载后启动
       window.addEventListener("load", startAll);
     </script>
